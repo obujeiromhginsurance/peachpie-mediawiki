@@ -1,0 +1,19 @@
+<Project Sdk="Peachpie.NET.Sdk/1.1.2">
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>mediawiki</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**/*.php" Exclude="tests/**;**/tests/**;maintenance/**;includes/debug/logger/monolog/**;vendorpsrlogPsrLogTest**;skinsVectorvendorcomposerinstallers/**;vendorcssjanuscssjanustest/**;vendorliuggio/statsd-php-clientsrcLiuggioStatsdClientMonolog/**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Peachpie.Library.Graphics" Version="1.1.2" />
+    <PackageReference Include="Peachpie.Runtime" Version="1.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Peachpie.App" Version="1.1.2" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,2 @@
+C:\Projects\MediaWiki\PhpSource\obj\Debug\netstandard2.1\MediaWiki.msbuildproj.AssemblyReference.cache
+C:\Projects\MediaWiki\PhpSource\obj\Debug\netstandard2.1\MediaWiki.msbuildproj.CoreCompileInputs.cache

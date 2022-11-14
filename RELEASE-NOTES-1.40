@@ -1,0 +1,253 @@
+= MediaWiki 1.40 =
+
+== MediaWiki 1.40.0-PRERELEASE ==
+
+THIS IS NOT A RELEASE YET
+
+MediaWiki 1.40 is an alpha-quality development branch, and is not recommended
+for use in production.
+
+== Upgrading notes for 1.40 ==
+Don't forget to always back up your database before upgrading!
+
+See the file UPGRADE for more detailed per-version upgrade instructions from the
+oldest supported upgrading version, MediaWiki 1.35.
+
+Some specific notes for MediaWiki 1.40 upgrades are below:
+* …
+
+For notes on 1.39.x and older releases, see HISTORY.
+
+=== Configuration changes for system administrators in 1.40 ===
+* When computing PBKDF2 password hashes, MediaWiki now detects and uses OpenSSL
+  support if available, unless $wgPasswordConfig['pbkdf2']['class'] is set in
+  LocalSettings.php. OpenSSL is more efficient, so if that setting is present,
+  you should remove it (or set it to 'Pbkdf2PasswordUsingOpenSSL' if possible).
+  If users get an internal error when trying to log in, you can try setting it
+  to 'Pbkdf2PasswordUsingHashExtension'. In particular, this would be necessary
+  if existing PBKDF2 password hashes were computed using a hash algorithm other
+  than "sha512" or "sha256" (the current and prior defaults).
+* …
+
+==== New configuration ====
+* $wgThumbnailNamespaces - Defines what namespaces thumbnails will be displayed
+  for in Special:Search. This is the list of namespaces for which thumbnails
+  (or a placeholder in the absence of a thumbnail) will be shown.
+* …
+
+==== Changed configuration ====
+* wgPasswordPolicies – This setting, which controls what makes for a valid
+  password for wiki accounts, has been adjusted to raise the minimal password
+  length from 1 to 8 characters. The initial limit of 1 has been in place since
+  MediaWiki 1.26. If you wish to allow shorter passwords, you can over-ride it
+  in your LocalSettings following the guidance on MediaWiki.org.
+* …
+
+==== Removed configuration ====
+* $wgShellboxUrl that was deprecated in 1.37 has now been removed,
+  set $wgShellboxUrls instead.
+* $wgParserTestFiles which was deprecated in 1.30 has now been removed;
+  extensions can place their parser test files in `tests/parser` instead.
+* …
+
+=== New user-facing features in 1.40 ===
+* Ability to show thumbnails (provided via onSearchResultProvideThumbnail
+  hook) for more than NS_FILE titles in Special:Search results.
+* New preference ('search-thumbnail-extra-namespaces') to allow users to
+  control whether to show more thumbnails (per $wgThumbnailNamespaces)
+* …
+
+=== New developer features in 1.40 ===
+* The ApiSandbox will now by default request responses in the latest API format,
+  rather than the original format. Users can set `formatversion` to a different
+  value if needed.
+* (T277618) The @noVarDump annotation from the DebugInfoTrait tool can now be
+  added to references to stop them from being expanded when their object is
+  passed to var_dump(), to make its use for debugging more feasible.
+* Added 'GetBlockErrorMessageKey' hook, allow extensions'
+  block error messages to be received and displayed by BlockErrorFormatter.
+* Added an optional RevisionRecord param to:
+  - ContentHandler::getParserOutputForIndexing
+  - ContentHandler::getDataForSearchIndex
+  - the SearchDataForIndex hook is deprecated in favor of SearchDataForIndex2
+* …
+
+=== External library changes in 1.40 ===
+
+==== New external libraries ====
+* …
+
+===== New development-only external libraries =====
+* …
+
+==== Changed external libraries ====
+* Updated OOUI from v0.44.3 to v0.45.0.
+* Updated codex, codex-search, and codex-icons from v0.1.1 to v0.2.2.
+* Updated justinrainbow/json-schema from 5.2.11 to 5.2.12.
+* Updated symfony/yaml from 5.4.10 to 5.4.12.
+* Updated pear/net_smtp from 0.10.0 to 0.10.1.
+* Updated guzzlehttp/guzzle 7.4.5 to 7.5.0.
+* Updated wikimedia/xmp-reader from 0.8.4 to 0.9.0.
+
+===== Changed development-only external libraries =====
+* Updated grunt from 1.5.2 to 1.5.3.
+* Updated grunt-banana-checker from 0.9.0 to 0.10.0.
+* Updated karma from 6.3.15 to 6.4.1.
+* Updated mediawiki/mediawiki-codesniffer from 38.0.0 to 39.0.0.
+* Updated php-parallel-lint/php-console-highlighter from 0.5 to 1.0.0.
+* Updated php-parallel-lint/php-parallel-lint from 1.3.1 to 1.3.2.
+* Updated phpunit/phpunit from ^8.5 to ^9.5.
+* …
+
+==== Removed external libraries ====
+* jquery.throttle-debounce, deprecated since MediaWiki 1.33.
+* …
+
+=== Bug fixes in 1.40 ===
+* …
+
+=== Action API changes in 1.40 ===
+* New `cancreateaccount` parameter on action=query&meta=userinfo that allows
+  you to check if the user can create an account. Some of the errors that have
+  previously been returned by action=query&list=users&usprop=cancreate are now
+  returned here.
+* …
+
+=== Action API internal changes in 1.40 ===
+* …
+
+=== Languages updated in 1.40 ===
+MediaWiki supports over 350 languages. Many localisations are updated regularly.
+Below only new and removed languages are listed, as well as changes to languages
+because of Phabricator reports.
+
+* (T320465) Added language support for Magahi (mag).
+* (T320912) Added language support for Arakanese (rki).
+
+=== Breaking changes in 1.40 ===
+* OutputPage::enableClientCache no longer accepts a parameter, nor does it
+  return the current value. It simply sets the OutputPage::mEnableClientCache
+  to true. Use OutputPage::disableClientCache to disable client side caching
+  instead.
+* Changes to skins:
+  - The internal protected method Skin::getFooterLinks() was removed.
+    It had no known usages. Different than SkinTemplate::getFooterLinks.
+  - The internal public method Skin::getSiteFooterLinks() was removed.
+    It had no known usages.
+* BagOStuff::makeKeyInternal(), deprecated for public use in 1.36, is now a
+  protected method of MediumSpecificBagOStuff.
+* WANObjectCache::reap() and WANObjectCache::reapCheckKey(), deprecated since
+  1.39, have been removed.
+* The EnqueueJob class, unused since 1.31, has been removed without
+  deprecation.
+* ContextSource::getStats, deprecated since 1.27, has been removed.
+* The following public properties of Parser, deprecated in 1.35,
+  have been made private: Parser::$mLinkId, Parser::$mIncludeSizes,
+  Parser::$mDoubleUnderscore, Parser::$mShowToc, Parser::$mRevisionId,
+  Parser::$mRevisionTimestamp, Parser::$mRevisionUser, Parser::$mRevisionSize,
+  Parser::$mInputSize, Parser::$mInParse, Parser::$mFirstCall,
+  Parser::$mGeneratedPPNodeCount
+* The MWGrants class, deprecated since 1.38, has been removed.
+* PageProps::getInstance(), deprecated since 1.38, has been removed.
+* Global functions wfReadOnly and wfReadOnlyReason, deprecated since 1.38, have
+  been removed.
+* Global function wfQueriesMustScale, deprecated since 1.39, has been removed.
+* Global function wfLogProfilingData, deprecated since 1.38, has been removed.
+* The HTMLCacheUpdate class, deprecated since 1.34, has been removed.
+* Linker::normaliseSpecialPage(), deprecated since 1.35, has been removed.
+* MWTimestamp::getHumanTimestamp(), deprecated since 1.26, has been removed.
+* JobQueueGroup::singleton() and ::destroySingletons(), deprecated since 1.37,
+  have been removed.
+* Collation::singleton() and ::factory(), deprecated since 1.37, have been
+  removed.
+* LoadBalancer::haveIndex() and ::isNonZeroLoad(), deprecated in 1.34,
+  have been removed.
+* SpecialVersion::listToText() and SpecialVersion::arrayToString()
+  have become private or internal without deprecation.
+* The 'ParserTestFiles' key in the schema for extension.json has been removed.
+  This was deprecated in 1.30 and the corresponding $wgParserTestFiles
+  configuration variable has also been removed in this release.  Extensions
+  can put parser test files in their `tests/parser` directory to have them
+  automatically run.
+* DBLockManager, MySqlLockManager, and PostgreSqlLockManager have been
+  removed without deprecation.
+* MediaWikiTestCaseTrait::checkPHPExtension() has been removed without
+  deprecation. Use PHPUnit @requires annotations instead.
+* EditPage::getCopywarn(), deprecated since 1.38, has been removed.
+* EditPage::getCopyrightWarning() now requires a MessageLocalizer parameter.
+  Use of other parameter types or omitting it was deprecated since 1.38.
+* Article::viewRedirect(), deprecated since 1.30, has been removed.
+* Title::getNotificationTimestamp(), deprecated since 1.35, has been removed.
+* WikiRevision::$fileIsTemp property, deprecated since 1.29, has been removed.
+* LoadMonitorMysql was removed without deprecation. Use LoadMonitor instead.
+* Return values in the parameter $pageLang of the PageContentLanguage hook with
+  other types than a Language object, deprecated since 1.33, hard deprecated
+  since 1.38, now throws an exception.
+* FormatMetadata::flattenArrayContentLang(), deprecated since 1.36, has been
+  removed.
+* WikiRevision::downloadSource(), deprecated since 1.31, has been removed.
+* …
+
+=== Deprecations in 1.40 ===
+* Changes to skins:
+  - The public Skin::footerLink is deprecated.
+    Use SkinComponentMenuLink::getTemplateData instead.
+    It now emits deprecation warnings.
+  - The protected Skin::lastModified is deprecated, and marked for @internal use
+    and now emits deprecation warnings.
+* ParserOutput::{get,set}ExternalLinkTarget() and
+  ParserOutput::{get,set}MaxTemplateDepth() have been deprecated and marked
+  for @internal use only.
+* TransactionProfiler::setSilenced() is deprecated.
+  Use TransactionProfiler::silenceForScope() instead.
+* The class Pbkdf2Password was renamed to Pbkdf2PasswordUsingHashExtension,
+  and the old name is now deprecated.
+* …
+
+=== Other changes in 1.40 ===
+* …
+
+== Compatibility ==
+
+MediaWiki 1.40 requires PHP 7.4.3 or later and the following PHP extensions:
+
+* ctype
+* dom
+* fileinfo
+* iconv
+* intl
+* json
+* mbstring
+* xml
+
+MariaDB is the recommended database software. MySQL, PostgreSQL, or SQLite can
+be used instead, but support for them is somewhat less mature.
+
+The supported versions are:
+
+* MariaDB 10.3 or higher
+* MySQL 5.7.0 or higher
+* PostgreSQL 10 or later
+* SQLite 3.8.0 or later
+
+== Online documentation ==
+Documentation for both end-users and site administrators is available on
+MediaWiki.org, and is covered under the GNU Free Documentation License (except
+for pages that explicitly state that their contents are in the public domain):
+
+       https://www.mediawiki.org/wiki/Special:MyLanguage/Documentation
+
+== Mailing list ==
+A mailing list is available for MediaWiki user support and discussion:
+
+       https://lists.wikimedia.org/mailman/listinfo/mediawiki-l
+
+A low-traffic announcements-only list is also available:
+
+       https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce
+
+It's highly recommended that you sign up for one of these lists if you're
+going to run a public MediaWiki, so you can be notified of security fixes.
+
+== IRC help ==
+There's usually someone online in #mediawiki on irc.libera.chat.

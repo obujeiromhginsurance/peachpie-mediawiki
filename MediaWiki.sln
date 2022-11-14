@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "MediaWiki", "MediaWiki.msbuildproj", "{8E1267B4-16A5-4E8C-9097-C530301301D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E1267B4-16A5-4E8C-9097-C530301301D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1267B4-16A5-4E8C-9097-C530301301D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1267B4-16A5-4E8C-9097-C530301301D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1267B4-16A5-4E8C-9097-C530301301D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE56C49D-CA9A-46C4-B342-22C1715EDBF9}
+	EndGlobalSection
+EndGlobal
